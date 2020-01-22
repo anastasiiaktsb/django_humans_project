@@ -26,6 +26,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+ATOMIC_REQUESTS = True
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -127,3 +129,10 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination'
 }
+
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
+EMAIL_USE_TLS = False
+
+EMAIL_HOST_PASSWORD = 'my_emails_password'
+DEFAULT_FROM_EMAIL = 'webmaster@localhost'

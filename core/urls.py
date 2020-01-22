@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import (
 from core.views import (
     UserRegisterAPIView,
     UserRetrieveUpdateAPIView,
-    HumanViewSet,
+    HumanViewSet, APIChangePasswordView,
 )
 
 router = routers.DefaultRouter()
@@ -20,4 +20,5 @@ urlpatterns = [
 
     path('register/', UserRegisterAPIView.as_view(), name='user-register'),
     path('me/', UserRetrieveUpdateAPIView.as_view(), name='user-info'),
+    path('reset-password/', APIChangePasswordView.as_view(), name='reset_password'),
 ]
