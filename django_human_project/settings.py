@@ -130,9 +130,15 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination'
 }
 
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = 'tmp/email-messages/'
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
 EMAIL_USE_TLS = False
 
 EMAIL_HOST_PASSWORD = 'my_emails_password'
 DEFAULT_FROM_EMAIL = 'webmaster@localhost'
+
+
+CELERY_BROKER_URL = 'amqp://localhost'
+CELERY_ALWAYS_EAGER = True
