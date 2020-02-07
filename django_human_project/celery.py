@@ -13,4 +13,8 @@ app.conf.beat_schedule = {
         'task': 'core.tasks.send_emails',
         'schedule': crontab(hour=16, minute=00),
     },
+    'check_status_of_the_appointment': {
+        'task': 'core.tasks.check_statuses',
+        'schedule': crontab(hour=23, minute=00),
+    },
 }
