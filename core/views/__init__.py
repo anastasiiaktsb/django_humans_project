@@ -5,3 +5,4 @@ from .patient import PatientDoctorsListAPIView
 from .auth_for_doctor import DoctorRegisterAPIView
 from .auth_for_patient import PatientRegisterAPIView
 from .appointment import AppointmentsListAPIView
+from .user_info import UserRetrieveUpdateAPIView

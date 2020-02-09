@@ -1,6 +1,5 @@
 from django.db import models
 
-# from core.models import Doctor, Patient
 from core.models.mixins import CreatedDateMixin, UpdatedDateMixin, FindInDateRangeMixin
 
 

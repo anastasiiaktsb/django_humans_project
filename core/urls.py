@@ -1,5 +1,6 @@
 from django.urls import path, include
 from rest_framework import routers
+from django.contrib.auth import views as auth_views
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -12,9 +13,11 @@ from core.views import (
     DoctorPatientsListAPIView,
     PatientDoctorsListAPIView,
     AppointmentsListAPIView,
+    UserRetrieveUpdateAPIView,
 )
 
 router = routers.DefaultRouter()
+
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -23,8 +26,9 @@ urlpatterns = [
 
     path('register-for-doctor/', DoctorRegisterAPIView.as_view(), name='doctor-register'),
     path('register-for-patient/', PatientRegisterAPIView.as_view(), name='patient-register'),
-    # path('me/', UserRetrieveUpdateAPIView.as_view(), name='user-info'),
-    path('reset-password/', APIChangePasswordView.as_view(), name='reset_password'),
+
+    path('me/', UserRetrieveUpdateAPIView.as_view(), name='user-info'),
+    path('reset-password/', APIChangePasswordView.as_view(), name='reset-password'),
 
     path('appointments/<pk>/cancel/', AppointmentCancelAPIView.as_view(), name='cancel-appointment'),
 

@@ -4,18 +4,10 @@ from rest_framework import filters
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import RetrieveUpdateAPIView
 
+from core.serializers.doctor import DoctorSerializer
+from core.serializers.patient import PatientSerializer
 from django_human_project.permissions import IsDoctor
 from core.models import Patient
-
-
-# class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
-#     serializer_class = UserSerializer
-#
-#     def get_object(self):
-#         user = self.request.user
-#         if hasattr(user, 'patient'):
-#             return user.patient.all()
-#         return user.doctor.all()
 
 
 class PatientFilter(django_filters.rest_framework.FilterSet):

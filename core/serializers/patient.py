@@ -21,22 +21,25 @@ class PatientRegisterSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        username = serializers.CharField(source='user.username')
-        email = serializers.EmailField(source='user.email')
-        password = serializers.CharField(source='user.password')
-        user = User(username=username, email=email)
-        user.set_password(password)
+        user_info = validated_data.pop('user')
+        user = User(username=user_info['username'], email=user_info['email'])
+        user.set_password(user_info['password'])
         user.save()
         patient = Patient.objects.create(user=user, **validated_data)
-        if Patient.objects.filter(user__username=username).exists():
-            raise serializers.ValidationError({'username': 'This username is reserved.'})
         subject = "Thanks for registering"
         message = f"Hello {user.username}. You're awesome! Thanks for registering."
-        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email])
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
         return patient
+
+    def validate(self, attrs):
+        if Patient.objects.filter(user__username=attrs['user']['username']).exists():
+            raise serializers.ValidationError({'username': 'This username is reserved.'})
+        return attrs
 
 
 class PatientSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(source='user.email', required=True)
+    password = serializers.CharField(source='user.password', write_only=True)
 
     class Meta:
         model = Patient
@@ -46,10 +49,12 @@ class PatientSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def update(self, instance, validated_data):
-        password = validated_data.pop('password', None)
-        username = validated_data.pop('username')
-        email = validated_data.pop('email')
-        patient = super().update(instance, validated_data)
-        patient.user.set_password(password)
-        patient.user.save()
-        return patient
+        user_info = validated_data.pop('user', {})
+        email = user_info.get('email')
+        validated_data.pop('password', None)
+        user = instance.user
+        if email and email != user.email:
+            user.email = email
+            user.save()
+        instance = super().update(instance, validated_data)
+        return instance
